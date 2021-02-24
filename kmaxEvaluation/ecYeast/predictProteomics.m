@@ -10,6 +10,12 @@ proteinlist = ecModel_batch.genes;
 CSlist = {'glucose' 'maltose' 'trehalose' 'fructose' 'sucrose' 'glycerol' 'acetate' 'pyruvate' 'lactate' 'oleate' 'galactose' 'raffinose'};
 CSexlist = {'r_1714_REV' 'r_1931_REV' 'r_1650_REV' 'r_1709_REV' 'r_2058_REV' 'r_1808_REV' 'r_1634_REV' 'r_2033_REV' 'r_1551_REV' 'r_2189_REV' 'r_1710_REV' 'r_4043_REV'};
 
+%% color
+colorhigh = [124,81,161]/255;
+colormedium = [158,154,200]/255;
+colorlow = [218,218,235]/255;
+
+
 %% Assume a global turnover rate for all enzymes in ecYeast
 model1 = ecModel_batch;
 % Median of yeast (Saccharomyces cerevisiae) kcats in BRENDA is 7.84 /s.
@@ -153,11 +159,11 @@ end
 figure();
 b = bar(1:length(rmseCSlist),rmsedata');
 b(1).LineWidth = 0.1;
-b(1).FaceColor = [158,202,225]/255;
+b(1).FaceColor = colorlow;
 b(2).LineWidth = 0.1;
-b(2).FaceColor = [66,146,198]/255;
+b(2).FaceColor = colormedium;
 b(3).LineWidth = 0.1;
-b(3).FaceColor = [8,81,156]/255;
+b(3).FaceColor = colorhigh;
 set(gca,'XTick',1:1:length(rmseCSlist));
 set(gca,'XTickLabel',strcat(rmseCSlist,ndata));
 ylim([0 2.5]);

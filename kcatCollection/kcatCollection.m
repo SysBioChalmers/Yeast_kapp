@@ -10,10 +10,14 @@ kcatL = num;
 rxnS = txt(2:end,1);
 refS = txt(2:end,3);
 kcatS = num;
+[num,txt,~] = xlsread('kcatCollected.xlsx','SA');
+rxnSA = txt(2:end,1);
+refSA = txt(2:end,3);
+kcatSA = num(:,1);
 
-allrxn = [rxnB;rxnL;rxnS];
-allref = [refB;refL;refS];
-allkcat = [kcatB;kcatL;kcatS];
+allrxn = [rxnB;rxnL;rxnS;rxnSA];
+allref = [refB;refL;refS;refSA];
+allkcat = [kcatB;kcatL;kcatS;kcatSA];
 
 kcat = struct();
 kcat.value = zeros(0,1);

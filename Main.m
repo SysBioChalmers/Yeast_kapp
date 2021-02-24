@@ -2,6 +2,9 @@ load('kapp.mat');
 load('kcat.mat');
 load('kmax.mat');
 
+%% color
+maincolor = [124,81,161]/255;
+heatmaplow = [218,218,235]/255;
 
 %% correlate kcat with condition-specific kapp
 figure();
@@ -20,7 +23,7 @@ for i = 1:length(kapp.condition)
     line([-4 6],[-4 6],'Color','k');
     hold on;
     box on;
-    scatter(log10(x_kcat),log10(y_kapp),3,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',[8,81,156]/255,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
+    scatter(log10(x_kcat),log10(y_kapp),3,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
     xlim([-4 6]);
     ylim([-4 6]);
     xticks([]);
@@ -60,8 +63,8 @@ figure();
 xlbl = num2cell(1:1:length(kapp.condition));
 xlbl_tmp = cellfun(@(x) [num2str(x),'.'],xlbl,'UniformOutput',false);
 ylbl = strcat(xlbl_tmp,kapp.condition);
-minclr = [189,215,231]/255;
-maxclr = [8,81,156]/255;
+minclr = heatmaplow;
+maxclr = maincolor;
 tmp1 = linspace(minclr(1),maxclr(1),129)';
 tmp2 = linspace(minclr(2),maxclr(2),129)';
 tmp3 = linspace(minclr(3),maxclr(3),129)';
@@ -71,22 +74,29 @@ h = heatmap(xlbl,ylbl,rho2data,'Colormap',clrmap,...
 title(['R^2 between kapps of ' num2str(length(kapp.condition)) ' conditions']);
 set(h,'FontSize',6,'FontName','Helvetica');
 h.FontColor = 'k';
-set(gcf,'position',[820 320 330 330]);
+set(gcf,'position',[820 320 360 360]);
 set(gca,'position',[0.25 0.2 0.55 0.55]);
 
-%% correlate kcat with kmax (rxns that have non-zero kapps at >= 3 conditions)
+%% correlate kcat with kmax (rxns that have non-zero kapps at >= 4 conditions)
 
 figure();
 line([-2 6],[-2 6],'Color','k');
 hold on;
+box on;
 rxns = intersect(kcat.rxn,kapp4.rxn);
 [~,p] = ismember(rxns,kcat.rxn);
 x_kcat = kcat.value(p);
 [~,q] = ismember(rxns,kapp4.rxn);
 y_kmax = kapp4.max(q);
 [RHO,PVAL] = corr(log10(x_kcat),log10(y_kmax),'Type','Pearson');
-scatter(log10(x_kcat),log10(y_kmax),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',[8,81,156]/255,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
-box on;
+scatter(log10(x_kcat),log10(y_kmax),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
+
+rxn_bigdev = rxns(abs(log10(x_kcat./y_kmax)) > quantile((abs(log10(x_kcat./y_kmax))),0.9));
+for i = 1:length(rxn_bigdev)
+    idxtmp = ismember(rxns,rxn_bigdev{i});
+    text(log10(x_kcat(idxtmp)),log10(y_kmax(idxtmp)),strrep(rxn_bigdev{i},'_',''),'Color','black','FontSize',5,'FontName','Helvetica','HorizontalAlignment','center','VerticalAlignment','bottom');
+end
+
 xlim([-2 6]);
 ylim([-2 6]);
 xticks([-2 0 2 4 6]);
@@ -109,11 +119,11 @@ y_kmax = kapp4.max(q);
 y_low = kapp4.minkmax(q);
 y_high = kapp4.maxkmax(q);
 [RHO,PVAL] = corr(log10(x_kcat),log10(y_kmax),'Type','Pearson');
-scatter(log10(x_kcat),log10(y_kmax),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',[8,81,156]/255,'MarkerFaceAlpha',0.3,'MarkerEdgeAlpha',0);
+scatter(log10(x_kcat),log10(y_kmax),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.3,'MarkerEdgeAlpha',0);
 for i = 1:length(y_kmax)
-    line([log10(x_kcat(i)),log10(x_kcat(i))],[log10(y_low(i)),log10(y_high(i))],'Color',[8,81,156]/255,'LineWidth',0.5);
-    line([log10(x_kcat(i))-0.1,log10(x_kcat(i))+0.1],[log10(y_low(i)),log10(y_low(i))],'Color',[8,81,156]/255,'LineWidth',0.5);
-    line([log10(x_kcat(i))-0.1,log10(x_kcat(i))+0.1],[log10(y_high(i)),log10(y_high(i))],'Color',[8,81,156]/255,'LineWidth',0.5);
+    line([log10(x_kcat(i)),log10(x_kcat(i))],[log10(y_low(i)),log10(y_high(i))],'Color',maincolor,'LineWidth',0.5);
+    line([log10(x_kcat(i))-0.1,log10(x_kcat(i))+0.1],[log10(y_low(i)),log10(y_low(i))],'Color',maincolor,'LineWidth',0.5);
+    line([log10(x_kcat(i))-0.1,log10(x_kcat(i))+0.1],[log10(y_high(i)),log10(y_high(i))],'Color',maincolor,'LineWidth',0.5);
 end
 box on;
 xlim([-2 6]);
@@ -144,11 +154,11 @@ y_kmax = y_kmax(idx);
 y_low = y_low(idx);
 y_high = y_high(idx);
 [RHO,PVAL] = corr(log10(x_kcat),log10(y_kmax),'Type','Pearson');
-scatter(log10(x_kcat),log10(y_kmax),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',[8,81,156]/255,'MarkerFaceAlpha',0.3,'MarkerEdgeAlpha',0);
+scatter(log10(x_kcat),log10(y_kmax),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.3,'MarkerEdgeAlpha',0);
 for i = 1:length(y_kmax)
-    line([log10(x_kcat(i)),log10(x_kcat(i))],[log10(y_low(i)),log10(y_high(i))],'Color',[8,81,156]/255,'LineWidth',0.5);
-    line([log10(x_kcat(i))-0.1,log10(x_kcat(i))+0.1],[log10(y_low(i)),log10(y_low(i))],'Color',[8,81,156]/255,'LineWidth',0.5);
-    line([log10(x_kcat(i))-0.1,log10(x_kcat(i))+0.1],[log10(y_high(i)),log10(y_high(i))],'Color',[8,81,156]/255,'LineWidth',0.5);
+    line([log10(x_kcat(i)),log10(x_kcat(i))],[log10(y_low(i)),log10(y_high(i))],'Color',maincolor,'LineWidth',0.5);
+    line([log10(x_kcat(i))-0.1,log10(x_kcat(i))+0.1],[log10(y_low(i)),log10(y_low(i))],'Color',maincolor,'LineWidth',0.5);
+    line([log10(x_kcat(i))-0.1,log10(x_kcat(i))+0.1],[log10(y_high(i)),log10(y_high(i))],'Color',maincolor,'LineWidth',0.5);
 end
 box on;
 xlim([-2 6]);
@@ -163,7 +173,7 @@ set(gcf,'position',[700 200 120 120]);
 set(gca,'position',[0.2 0.2 0.7 0.7]);
 
 figure();
-histogram(log2(kapp4.fc));
+histogram(log2(kapp4.fc),'FaceColor',maincolor);
 set(gca,'FontSize',6,'FontName','Helvetica');
 xlim([-1 12]);
 xticks([0 5 10]);
@@ -198,7 +208,7 @@ for i = 1:length(list_gr)
     saturtmp = saturtmp(saturtmp~=0);
     y = mean(saturtmp);
     hold on;
-    scatter(x,y,15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',[8,81,156]/255,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
+    scatter(x,y,15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
     
 end
 xlim([0 0.4]);
@@ -217,7 +227,7 @@ for i = 1:size(list_satur,1)
     list_p(i) = n;
 end
 figure();
-histogram(list_rho);
+histogram(list_rho,'FaceColor',maincolor);
 set(gca,'FontSize',6,'FontName','Helvetica');
 title('Correlation between kapp/kmax and growth rate','FontSize',7,'FontName','Helvetica');
 xlabel('Pearson r','FontSize',7,'FontName','Helvetica');
@@ -239,7 +249,7 @@ maxnum = max([lenlow,lenhigh]);
 satur_low = [satur_low;nan(maxnum-length(satur_low),1)];
 satur_high = [satur_high;nan(maxnum-length(satur_high),1)];
 figure();
-h = boxplot([satur_low satur_high],'Notch','on','Symbol','.','OutlierSize',6,'Widths',0.3,'Colors',[8,81,156]/255);
+h = boxplot([satur_low satur_high],'Notch','on','Symbol','.','OutlierSize',6,'Widths',0.3,'Colors',maincolor);
 set(h,{'linew'},{0.5});
 xlim([0.5 2.5]);
 xticks([1 2]);
@@ -259,7 +269,7 @@ set(gca,'position',[0.25 0.2 0.7 0.7]);
 %% kmax correlates with flux
 figure();
 [RHO,PVAL] = corr(log10(kapp4.pFBA),log10(kapp4.max),'Type','Pearson');
-scatter(log10(kapp4.pFBA),log10(kapp4.max),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',[8,81,156]/255,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
+scatter(log10(kapp4.pFBA),log10(kapp4.max),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
 box on;
 xlim([-6 2]);
 ylim([-4 6]);
@@ -316,7 +326,7 @@ figure();
 line([-2 6],[-2 6],'Color','k');
 hold on;
 [RHO,PVAL] = corr(log10(kmax_estm),log10(kmax_meas),'Type','Pearson');
-scatter(log10(kmax_estm),log10(kmax_meas),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',[8,81,156]/255,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
+scatter(log10(kmax_estm),log10(kmax_meas),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
 box on;
 xlim([-2 6]);
 ylim([-2 6]);

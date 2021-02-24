@@ -4,6 +4,12 @@ maxmu_org = sol_org.f;
 clear sol_org;
 prot_ub_org = ecModel_batch.ub(ismember(ecModel_batch.rxnNames,'prot_pool_exchange'));
 
+%% color
+colorhigh = [124,81,161]/255;
+colormedium = [158,154,200]/255;
+colorlow = [218,218,235]/255;
+
+
 %% Assume a global turnover rate for all enzymes in ecYeast
 model1 = ecModel_batch;
 % Median of yeast (Saccharomyces cerevisiae) kcats in BRENDA is 7.84 /s.
@@ -64,7 +70,7 @@ figure();
 subplot(1,3,1);
 x = fcc_list1;
 y = enzyme_list1;
-h = barh(1:length(y(end-19:end)),x(end-19:end),0.4,'FaceColor',[158,202,225]/255,'EdgeColor',[158,202,225]/255,'LineWidth',0.5);
+h = barh(1:length(y(end-19:end)),x(end-19:end),0.4,'FaceColor',colorlow,'EdgeColor','k','LineWidth',0.5);
 xlim([0 0.12]);
 set(gca,'YTick',1:1:length(y(end-19:end)));
 set(gca,'YTickLabel',y(end-19:end));
@@ -74,7 +80,7 @@ title('ecYeast with a global kcat','FontSize',7,'FontName','Helvetica','Color','
 subplot(1,3,2);
 x = fcc_list2;
 y = enzyme_list2;
-h = barh(1:length(y(end-19:end)),x(end-19:end),0.4,'FaceColor',[66,146,198]/255,'EdgeColor',[66,146,198]/255,'LineWidth',0.5);
+h = barh(1:length(y(end-19:end)),x(end-19:end),0.4,'FaceColor',colormedium,'EdgeColor','k','LineWidth',0.5);
 xlim([0 0.12]);
 set(gca,'YTick',1:1:length(y(end-19:end)));
 set(gca,'YTickLabel',y(end-19:end));
@@ -84,7 +90,7 @@ title('ecYeast with default kcat values','FontSize',7,'FontName','Helvetica','Co
 subplot(1,3,3);
 x = fcc_list3;
 y = enzyme_list3;
-h = barh(1:length(y(end-19:end)),x(end-19:end),0.4,'FaceColor',[8,81,156]/255,'EdgeColor',[8,81,156]/255,'LineWidth',0.5);
+h = barh(1:length(y(end-19:end)),x(end-19:end),0.4,'FaceColor',colorhigh,'EdgeColor','k','LineWidth',0.5);
 xlim([0 0.12]);
 set(gca,'YTick',1:1:length(y(end-19:end)));
 set(gca,'YTickLabel',y(end-19:end));
@@ -132,20 +138,20 @@ fcclist3 = fcc_list1(n3);
 
 subplot(3,1,1);
 box on;
-scatter(fcclist3,fcclist1,20,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',[8,81,156]/255,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
+scatter(fcclist3,fcclist1,20,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',colorhigh,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
 set(gca,'FontSize',6,'FontName','Helvetica');
 title('FCC values of enzymes','FontSize',7,'FontName','Helvetica');
 xlabel('kmax','FontSize',7,'FontName','Helvetica');
 ylabel('global kcat','FontSize',7,'FontName','Helvetica');
 subplot(3,1,2);
 box on;
-scatter(fcclist3,fcclist2,20,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',[8,81,156]/255,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
+scatter(fcclist3,fcclist2,20,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',colorhigh,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
 set(gca,'FontSize',6,'FontName','Helvetica');
 xlabel('kmax','FontSize',7,'FontName','Helvetica');
 ylabel('default kcat','FontSize',7,'FontName','Helvetica');
 subplot(3,1,3);
 box on;
-scatter(fcclist1,fcclist2,20,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',[8,81,156]/255,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
+scatter(fcclist1,fcclist2,20,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',colorhigh,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
 set(gca,'FontSize',6,'FontName','Helvetica');
 xlabel('global kcat','FontSize',7,'FontName','Helvetica');
 ylabel('default kcat','FontSize',7,'FontName','Helvetica');
