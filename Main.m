@@ -18,6 +18,9 @@ for i = 1:length(kapp.condition)
     x_kcat = kcat.value(p);
     [~,q] = ismember(rxnstmp,kapprxn);
     y_kapp = kapplist(q);
+%     idx_heterexp = kcat.HeterExp(p) ~= 1;
+%     x_kcat = x_kcat(idx_heterexp);
+%     y_kapp = y_kapp(idx_heterexp);
     [RHOtmp,PVALtmp] = corr(log10(x_kcat),log10(y_kapp),'Type','Pearson');
     subplot(5,7,i);
     line([-4 6],[-4 6],'Color','k');
@@ -90,13 +93,11 @@ x_kcat = kcat.value(p);
 y_kmax = kapp4.max(q);
 [RHO,PVAL] = corr(log10(x_kcat),log10(y_kmax),'Type','Pearson');
 scatter(log10(x_kcat),log10(y_kmax),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
-
 rxn_bigdev = rxns(abs(log10(x_kcat./y_kmax)) > quantile((abs(log10(x_kcat./y_kmax))),0.9));
 for i = 1:length(rxn_bigdev)
     idxtmp = ismember(rxns,rxn_bigdev{i});
     text(log10(x_kcat(idxtmp)),log10(y_kmax(idxtmp)),strrep(rxn_bigdev{i},'_',''),'Color','black','FontSize',5,'FontName','Helvetica','HorizontalAlignment','center','VerticalAlignment','bottom');
 end
-
 xlim([-2 6]);
 ylim([-2 6]);
 xticks([-2 0 2 4 6]);
@@ -106,6 +107,32 @@ set(gca,'FontSize',6,'FontName','Helvetica');
 xlabel('log10 kcat (in vitro) (/s)','FontSize',7,'FontName','Helvetica');
 ylabel('log10 kmax (in vivo) (/s)','FontSize',7,'FontName','Helvetica');
 set(gcf,'position',[200 200 120 120]);
+set(gca,'position',[0.2 0.2 0.7 0.7]);
+
+figure();
+idx_heterexp = kcat.HeterExp(p) ~= 1;
+x_kcat = x_kcat(idx_heterexp);
+y_kmax = y_kmax(idx_heterexp);
+rxns = rxns(idx_heterexp);
+[RHO1,PVAL1] = corr(log10(x_kcat),log10(y_kmax),'Type','Pearson');
+line([-2 6],[-2 6],'Color','k');
+hold on;
+box on;
+scatter(log10(x_kcat),log10(y_kmax),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
+rxn_bigdev = rxns(abs(log10(x_kcat./y_kmax)) > quantile((abs(log10(x_kcat./y_kmax))),0.9));
+for i = 1:length(rxn_bigdev)
+    idxtmp = ismember(rxns,rxn_bigdev{i});
+    text(log10(x_kcat(idxtmp)),log10(y_kmax(idxtmp)),strrep(rxn_bigdev{i},'_',''),'Color','black','FontSize',5,'FontName','Helvetica','HorizontalAlignment','center','VerticalAlignment','bottom');
+end
+xlim([-2 6]);
+ylim([-2 6]);
+xticks([-2 0 2 4 6]);
+yticks([-2 0 2 4 6]);
+title(['R^2' '= ' num2str(round(RHO1^2,3)) '; p' ' = ' num2str(round(PVAL1,2)) '; N' ' = ' num2str(length(x_kcat))],'FontSize',6,'FontName','Helvetica');
+set(gca,'FontSize',6,'FontName','Helvetica');
+xlabel('log10 kcat (in vitro) (/s)','FontSize',7,'FontName','Helvetica');
+ylabel('log10 kmax (in vivo) (/s)','FontSize',7,'FontName','Helvetica');
+set(gcf,'position',[200 400 120 120]);
 set(gca,'position',[0.2 0.2 0.7 0.7]);
 
 figure();

@@ -30,16 +30,16 @@ heatmaplow = [218,218,235]/255;
 kcat_rxn = kcat.rxn;
 kcat_num = kcat.value;
 
-% kapp_num = kapp4.max;
-% kapp_gpr = kapp4.protein;
-% kapp_rxn = kapp4.rxn;
+kapp_num = kapp4.max;
+kapp_gpr = kapp4.protein;
+kapp_rxn = kapp4.rxn;
 
-i = 4;
-kapptmp = kapp.values(:,i);
-idxtmp = kapptmp~=0;
-kapp_rxn = kapp.rxn(idxtmp);
-kapp_num = kapptmp(idxtmp);
-kapp_gpr = kapp.protein(idxtmp);
+% i = 4;
+% kapptmp = kapp.values(:,i);
+% idxtmp = kapptmp~=0;
+% kapp_rxn = kapp.rxn(idxtmp);
+% kapp_num = kapptmp(idxtmp);
+% kapp_gpr = kapp.protein(idxtmp);
 
 list_rxns = intersect(kcat_rxn,kapp_rxn);
 [~,p] = ismember(list_rxns,kcat_rxn);
@@ -94,7 +94,7 @@ end
 
 
 
-idxtest = ismember(list_rxns,split(GOrxns(4)));
+idxtest = ismember(list_rxns,split(GOrxns(5)));
 scatter(log10(list_x(idxtest)),log10(list_y(idxtest)));
 list_rxns(idxtest)
 
