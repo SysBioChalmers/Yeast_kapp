@@ -45,12 +45,18 @@ for i = 1:length(allrxn)
         kcat.HeterExp = [kcat.HeterExp;hetmp];
     else
         idxtmp = ismember(kcat.rxn,rxntmp);
-        if kcat.value(idxtmp) == kcattmp
-            kcat.ref(idxtmp) = strcat(kcat.ref(idxtmp),{'; '},reftmp);
-        elseif kcat.value(idxtmp) < kcattmp
+        if kcat.HeterExp(idxtmp) == 1 && hetmp ~= 1
             kcat.value(idxtmp) = kcattmp;
             kcat.ref(idxtmp) = reftmp;
             kcat.HeterExp(idxtmp) = hetmp;
+        elseif (kcat.HeterExp(idxtmp) == 1 && hetmp == 1) || (kcat.HeterExp(idxtmp) ~= 1 && hetmp ~= 1)
+            if kcat.value(idxtmp) == kcattmp
+                kcat.ref(idxtmp) = strcat(kcat.ref(idxtmp),{'; '},reftmp);
+            elseif kcat.value(idxtmp) < kcattmp
+                kcat.value(idxtmp) = kcattmp;
+                kcat.ref(idxtmp) = reftmp;
+                kcat.HeterExp(idxtmp) = hetmp;
+            end
         end
     end
 end

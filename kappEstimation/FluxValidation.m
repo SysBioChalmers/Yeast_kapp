@@ -11,11 +11,13 @@ fluxB = mean([fluxB1 fluxB2 fluxB3],2);
 relfluxB = fluxB*100/-fluxB(ismember(rxnlist,'r_1714'));
 
 % glucose-limited chemostat D=0.1/h
-load('Fluxes_Lahtvee_REF.mat');
+load('Fluxes_Yu2_std_010R1.mat');
 fluxC1 = Fluxes.pFBA;
-load('Fluxes_Yu2_std_010.mat');
+load('Fluxes_Yu2_std_010R2.mat');
 fluxC2 = Fluxes.pFBA;
-fluxC = mean([fluxC1 fluxC2],2);
+load('Fluxes_Yu2_std_010R3.mat');
+fluxC3 = Fluxes.pFBA;
+fluxC = mean([fluxC1 fluxC2 fluxC3],2);
 relfluxC = fluxC*100/-fluxC(ismember(rxnlist,'r_1714'));
 
 %% measured flux data

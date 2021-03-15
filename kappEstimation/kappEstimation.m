@@ -108,16 +108,16 @@ valuelist(valuelist == inf) = 0;
 fluxlist = fluxlist(idx1,:);
 abundlist = abundlist(idx1,:);
 
-kapp = struct();
-kapp.values = valuelist;
-kapp.rxn = rxnlist;
-kapp.protein = grlist;
-kapp.condition = rowlist;
-kapp.fluxes = fluxlist;
-kapp.protein_conc = abundlist;
+kapp_raw = struct();
+kapp_raw.values = valuelist;
+kapp_raw.rxn = rxnlist;
+kapp_raw.protein = grlist;
+kapp_raw.condition = rowlist;
+kapp_raw.fluxes = fluxlist;
+kapp_raw.protein_conc = abundlist;
 
 cd ../;
-save('kapp.mat','kapp');
+save('kapp_raw.mat','kapp_raw');
 clear;
 
 
