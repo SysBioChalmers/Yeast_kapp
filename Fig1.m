@@ -141,12 +141,12 @@ box on;
 scatter(log10(x_kcat),log10(y_kmax),10,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
 text(2,0.2,['R^2' ' = ' num2str(round(RHO^2,3))],'Color','black','FontSize',6,'FontName','Helvetica');
 text(2,-0.5,['N = ' num2str(length(x_kcat))],'Color','black','FontSize',6,'FontName','Helvetica');
-text(2,-1.2,['p' ' = ' num2str(round(PVAL,10))],'Color','black','FontSize',6,'FontName','Helvetica');
-% rxn_bigdev = rxns(abs(log10(x_kcat./y_kmax)) > quantile((abs(log10(x_kcat./y_kmax))),0.95));
-% for i = 1:length(rxn_bigdev)
-%     idxtmp = ismember(rxns,rxn_bigdev{i});
-%     text(log10(x_kcat(idxtmp)),log10(y_kmax(idxtmp)),strrep(rxn_bigdev{i},'_',''),'Color','black','FontSize',5,'FontName','Helvetica','HorizontalAlignment','center','VerticalAlignment','bottom');
-% end
+text(2,-1.2,['p' ' = ' num2str(round(PVAL,3))],'Color','black','FontSize',6,'FontName','Helvetica');
+rxn_bigdev = rxns(abs(log10(x_kcat./y_kmax)) > quantile((abs(log10(x_kcat./y_kmax))),0.7));
+for i = 1:length(rxn_bigdev)
+    idxtmp = ismember(rxns,rxn_bigdev{i});
+    text(log10(x_kcat(idxtmp)),log10(y_kmax(idxtmp)),strrep(rxn_bigdev{i},'_',''),'Color','black','FontSize',5,'FontName','Helvetica','HorizontalAlignment','center','VerticalAlignment','bottom');
+end
 xlim([-2 5]);
 ylim([-2 5]);
 xticks(-2:1:5);
@@ -241,11 +241,11 @@ for i = 1:length(kapp.condition)
     x_kcat = kcat.value(p);
     [~,q] = ismember(rxnstmp,kapprxn);
     y_kapp = kapplist(q);
-%     idx_heterexp = kcat.HeterExp(p) ~= 1;
-%     x_kcat = x_kcat(idx_heterexp);
-%     y_kapp = y_kapp(idx_heterexp);
+    idx_heterexp = kcat.HeterExp(p) ~= 1;
+    x_kcat = x_kcat(idx_heterexp);
+    y_kapp = y_kapp(idx_heterexp);
     [RHOtmp,PVALtmp] = corr(log10(x_kcat),log10(y_kapp),'Type','Pearson');
-    subplot(5,9,i);
+    subplot(4,7,i);
     line([-4 6],[-4 6],'Color','k');
     hold on;
     box on;
@@ -257,7 +257,7 @@ for i = 1:length(kapp.condition)
 	text(-3.5,4.7,num2str(i),'FontSize',6,'FontName','Helvetica','FontWeight','bold');
     text(-2,-2.5,['R^2' '= ' num2str(round(RHOtmp^2,2))],'FontSize',6,'FontName','Helvetica');
 end
-set(gcf,'position',[400 500 420 200]);
+set(gcf,'position',[400 500 360 190]);
 
 %% Variation between kmax and kmin
 figure();
@@ -265,7 +265,7 @@ histogram(log2(kapp4.fc),'FaceColor',maincolor);
 set(gca,'FontSize',6,'FontName','Helvetica');
 xlim([-1 12]);
 xticks([0 5 10]);
-ylim([0 50]);
+ylim([0 30]);
 xlabel('log2(max/min)','FontSize',7,'FontName','Helvetica');
 ylabel('Count','FontSize',7,'FontName','Helvetica');
 set(gcf,'position',[10 200 120 120]);
@@ -313,7 +313,7 @@ title(['R^2 between kapps of ' num2str(length(kapp.condition)) ' conditions']);
 set(h,'FontSize',6,'FontName','Helvetica');
 h.FontColor = 'k';
 set(gcf,'position',[820 320 360 360]);
-set(gca,'position',[0.25 0.2 0.55 0.55]);
+set(gca,'position',[0.25 0.2 0.5 0.5]);
 
 %% saturation with growth rate
 [num,txt,~] = xlsread('ProteomicsFlux.xlsx','Flux');
@@ -448,7 +448,7 @@ x_k = k_value(p);
 y_f = avgfluxlist(q);
 [RHO,PVAL] = corr(log10(x_k),log10(y_f),'Type','Pearson');
 scatter(log10(x_k),log10(y_f),10,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
-title(['R^2' ' = ' num2str(round(RHO^2,3)) '; N = ' num2str(length(x_k)) '; p' ' = ' num2str(round(PVAL,40))],'Color','black','FontSize',6,'FontName','Helvetica');
+title(['R^2' ' = ' num2str(round(RHO^2,3)) '; N = ' num2str(length(x_k)) '; p' ' = ' num2str(round(PVAL,48))],'Color','black','FontSize',6,'FontName','Helvetica');
 xlim([-3 6]);
 ylim([-6 3]);
 set(gca,'FontSize',6,'FontName','Helvetica');

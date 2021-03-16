@@ -113,26 +113,28 @@ end
 
 levellistmu = zeros(length(proteinlist),0);
 for k = 1:length(CSlist)
-    modelmu = ecModel_batch;
+    modelmu = model4;
     mucutoff = maxmulist(k);
-    idxcond = ~(condGR > mucutoff);
-    for i = 1:length(kapp.rxn)
-        rxntmp = kapp.rxn{i};
-        kmax = max(kapp.values(i,idxcond))*3600; % /h
-        if kmax > 0
-            if length(rxntmp) == 6
-                idxtmp = find(contains(modelmu.rxns,rxntmp));
-            elseif length(rxntmp) == 10
-                if strcmp(rxntmp(8:end),'rvs')
-                    idxtmp = find(contains(modelmu.rxns,rxntmp(1:6)) & contains(modelmu.rxns,'REV'));
-                elseif strcmp(rxntmp(8:end),'fwd')
-                    idxtmp = find(contains(modelmu.rxns,rxntmp(1:6)) & ~contains(modelmu.rxns,'REV') & ~contains(modelmu.rxns,'arm'));
+    if mucutoff < max(condGR)
+        idxcond = ~(condGR > mucutoff);
+        for i = 1:length(kapp.rxn)
+            rxntmp = kapp.rxn{i};
+            kmax = max(kapp.values(i,idxcond))*3600; % /h
+            if kmax > 0
+                if length(rxntmp) == 6
+                    idxtmp = find(contains(modelmu.rxns,rxntmp));
+                elseif length(rxntmp) == 10
+                    if strcmp(rxntmp(8:end),'rvs')
+                        idxtmp = find(contains(modelmu.rxns,rxntmp(1:6)) & contains(modelmu.rxns,'REV'));
+                    elseif strcmp(rxntmp(8:end),'fwd')
+                        idxtmp = find(contains(modelmu.rxns,rxntmp(1:6)) & ~contains(modelmu.rxns,'REV') & ~contains(modelmu.rxns,'arm'));
+                    end
                 end
-            end
-            for j = 1:length(idxtmp)
-                metlist = modelmu.mets(full(modelmu.S(:,idxtmp(j))) < 0);
-                protmet = metlist(contains(metlist,'prot_'));
-                modelmu.S(ismember(modelmu.mets,protmet),idxtmp(j)) = -1/kmax;
+                for j = 1:length(idxtmp)
+                    metlist = modelmu.mets(full(modelmu.S(:,idxtmp(j))) < 0);
+                    protmet = metlist(contains(metlist,'prot_'));
+                    modelmu.S(ismember(modelmu.mets,protmet),idxtmp(j)) = -1/kmax;
+                end
             end
         end
     end
@@ -151,7 +153,7 @@ prot = txt(2:end,1);
 MW = num;
 clear num txt;
 % glucose as reference
-[num,txt,~] = xlsread('ProteomicsFlux.xlsx','DiBartolomeo');
+[num,txt,~] = xlsread('ProteomicsFlux.xlsx','DiBartolomeo2020');
 gluc_protlist = txt(2:end,1);
 condid = txt(1,2:end);
 rawdata = mean(num(:,contains(condid,'Gluc')),2);
@@ -248,13 +250,13 @@ b(4).LineWidth = 0.5;
 b(4).FaceColor = colorveryhigh;
 set(gca,'XTick',1:1:length(rmseCSlist));
 set(gca,'XTickLabel',strcat(rmseCSlist,ndata));
-ylim([0 2.5]);
+ylim([0 2.3]);
 legend({'global kcat' 'default kcat' 'kmax' 'kmax(mu)'},'Location','northwest','Orientation','horizontal','FontSize',6,'FontName','Helvetica');
 set(gca,'FontSize',6,'FontName','Helvetica');
 ylabel('RMSE','FontSize',7,'FontName','Helvetica','Color','k');
 title('Predictions of protein levels on various carbon sources','FontSize',7,'FontName','Helvetica','Color','k');
 set(gcf,'position',[200 100 400 120]);
-set(gca,'position',[0.1 0.2 0.85 0.7]);
+set(gca,'position',[0.1 0.2 0.75 0.5]);
 box off;
 
 

@@ -1,21 +1,21 @@
 %% simulated flux data
 % glucose batch
-load('Fluxes_DiBartolomeo_GlucR1.mat');
+load('Fluxes_DiBartolomeo2020_GlucR1.mat');
 rxnlist = Fluxes.model.rxns;
 fluxB1 = Fluxes.pFBA;
-load('Fluxes_DiBartolomeo_GlucR2.mat');
+load('Fluxes_DiBartolomeo2020_GlucR2.mat');
 fluxB2 = Fluxes.pFBA;
-load('Fluxes_DiBartolomeo_GlucR3.mat');
+load('Fluxes_DiBartolomeo2020_GlucR3.mat');
 fluxB3 = Fluxes.pFBA;
 fluxB = mean([fluxB1 fluxB2 fluxB3],2);
 relfluxB = fluxB*100/-fluxB(ismember(rxnlist,'r_1714'));
 
 % glucose-limited chemostat D=0.1/h
-load('Fluxes_Yu2_std_010R1.mat');
+load('Fluxes_Yu2021_std_010R1.mat');
 fluxC1 = Fluxes.pFBA;
-load('Fluxes_Yu2_std_010R2.mat');
+load('Fluxes_Yu2021_std_010R2.mat');
 fluxC2 = Fluxes.pFBA;
-load('Fluxes_Yu2_std_010R3.mat');
+load('Fluxes_Yu2021_std_010R3.mat');
 fluxC3 = Fluxes.pFBA;
 fluxC = mean([fluxC1 fluxC2 fluxC3],2);
 relfluxC = fluxC*100/-fluxC(ismember(rxnlist,'r_1714'));

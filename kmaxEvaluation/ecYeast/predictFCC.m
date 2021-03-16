@@ -5,10 +5,13 @@ clear sol_org;
 prot_ub_org = ecModel_batch.ub(ismember(ecModel_batch.rxnNames,'prot_pool_exchange'));
 
 %% color
-colorhigh = [124,81,161]/255;
-colormedium = [158,154,200]/255;
-colorlow = [218,218,235]/255;
+% colorhigh = [124,81,161]/255;
+% colormedium = [158,154,200]/255;
+% colorlow = [218,218,235]/255;
 
+colorhigh = [254,178,76]/255;
+colormedium = [255,237,160]/255;
+colorlow = [1,1,1];
 
 %% Assume a global turnover rate for all enzymes in ecYeast
 model1 = ecModel_batch;

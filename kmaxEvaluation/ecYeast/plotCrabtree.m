@@ -31,9 +31,9 @@ load('kmax.mat');
 
 model = ecModel_batch;
 
-for i = 1:length(kapp3.rxn)
-    rxntmp = kapp3.rxn{i};
-    kmax = kapp3.max(i)*3600; % /h
+for i = 1:length(kapp4.rxn)
+    rxntmp = kapp4.rxn{i};
+    kmax = kapp4.max(i)*3600; % /h
     if length(rxntmp) == 6
         idxtmp = find(contains(model.rxns,rxntmp));
     elseif length(rxntmp) == 10

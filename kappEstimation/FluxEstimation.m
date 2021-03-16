@@ -29,12 +29,12 @@ for i = 1:length(expList)
     model_tmp = model;
     
     % change protein content for N-limited chemostats
-    if contains(expID,'Yu1_CN30')
+    if contains(expID,'Yu2020_CN30')
         model_tmp = scaleBioMass(model_tmp,'protein',0.3665,'carbohydrate',false);
-    elseif contains(expID,'Yu1_CN50') || contains(expID,'Yu1_CN115')
+    elseif contains(expID,'Yu2020_CN50') || contains(expID,'Yu2020_CN115')
         model_tmp = scaleBioMass(model_tmp,'protein',0.2635,'carbohydrate',false);
-    elseif contains(expID,'Yu2')
-        [num,txt,~] = xlsread('ProteomicsFlux.xlsx','Yu2RNAProtein');
+    elseif contains(expID,'Yu2021')
+        [num,txt,~] = xlsread('ProteomicsFlux.xlsx','Yu2021RNAProtein');
         idtmp = txt(2:end,1);
         rna_cont = num(:,1);
         prot_cont = num(:,2);
@@ -44,17 +44,17 @@ for i = 1:length(expList)
     end
     
     % set objective function for each condition
-    if contains(expID,{'Lahtvee','Yu1_Clim','Yu2_std_010','Yu2_Gln_glc','Yu2_Phe_std','Yu2_Ile_std'})
+    if contains(expID,{'Lahtvee','Yu2020_Clim','Yu2021_std_010','Yu2021_Gln_glc','Yu2021_Phe_std','Yu2021_Ile_std'})
         model_tmp = changeRxnBounds(model_tmp, 'r_4046', 0, 'l');
         model_tmp = changeRxnBounds(model_tmp, 'r_4046', 1000, 'u');
         model_tmp = changeObjective(model_tmp, 'r_4046'); % max ATP production
     elseif contains(expID,'DiBartolomeo')
         model_tmp = changeObjective(model_tmp, 'r_2111'); % max growth rate
-    elseif contains(expID,'Yu2_Gln_N30')
+    elseif contains(expID,'Yu2021_Gln_N30')
         model_tmp = changeObjective(model_tmp, 'r_1891'); % min gln uptake
-    elseif contains(expID,'Yu2_Phe_N30')
+    elseif contains(expID,'Yu2021_Phe_N30')
         model_tmp = changeObjective(model_tmp, 'r_1903'); % min phe uptake
-    elseif contains(expID,'Yu2_Ile_N30')
+    elseif contains(expID,'Yu2021_Ile_N30')
         model_tmp = changeObjective(model_tmp, 'r_1897'); % min ile uptake
     else % the others are N-lim conditions
         model_tmp = changeObjective(model_tmp, 'r_1654'); % min NH4 uptake

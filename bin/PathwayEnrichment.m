@@ -39,12 +39,12 @@ kapp_num = kapp4.max;
 kapp_gpr = kapp4.protein;
 kapp_rxn = kapp4.rxn;
 
-i = 4;
-kapptmp = kapp.values(:,i);
-idxtmp = kapptmp~=0;
-kapp_rxn = kapp.rxn(idxtmp);
-kapp_num = kapptmp(idxtmp);
-kapp_gpr = kapp.protein(idxtmp);
+% i = 4;
+% kapptmp = kapp.values(:,i);
+% idxtmp = kapptmp~=0;
+% kapp_rxn = kapp.rxn(idxtmp);
+% kapp_num = kapptmp(idxtmp);
+% kapp_gpr = kapp.protein(idxtmp);
 
 list_rxns = intersect(kcat_rxn,kapp_rxn);
 [~,p] = ismember(list_rxns,kcat_rxn);

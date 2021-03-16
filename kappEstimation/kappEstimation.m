@@ -63,24 +63,24 @@ for i = 1:length(file)
                     [a,~] = ismember(gr_tmp,proteinList);
                     if any(a)
                         gr_tmp = gr_tmp(a);
-                        if strcmp(sheetName,'Lahtvee')
+                        if strcmp(sheetName,'Lahtvee2017')
                             [~,abund_idx] = ismember(gr_tmp,proteinList);
                             abund_tmp = abundList(abund_idx);
                             mmol_gCDW = sum(abund_tmp*1e12/6.02e23)*1000;
                             kapp_tmp = flux_tmp/mmol_gCDW/3600; %/s
-                        elseif strcmp(sheetName,'Yu1')
+                        elseif strcmp(sheetName,'Yu2020')
                             [~,abund_idx] = ismember(gr_tmp,proteinList);
                             abund_tmp = abundList(abund_idx);
                             mmol_gCDW = sum(abund_tmp*1e3/1e15)*1000;
                             kapp_tmp = flux_tmp/mmol_gCDW/3600; %/s
-                        elseif strcmp(sheetName,'DiBartolomeo')
+                        elseif strcmp(sheetName,'DiBartolomeo2020')
                             [~,abund_idx] = ismember(gr_tmp,proteinList);
                             abund_tmp = abundList(abund_idx);
                             [~,mw_idx] = ismember(gr_tmp,geneUniProt);
                             mw_tmp = MWUniProt(mw_idx);
                             mmol_gCDW = sum(abund_tmp./mw_tmp)*1000;
                             kapp_tmp = flux_tmp/mmol_gCDW/3600; %/s
-                        elseif strcmp(sheetName,'Yu2')
+                        elseif strcmp(sheetName,'Yu2021')
                             [~,abund_idx] = ismember(gr_tmp,proteinList);
                             abund_tmp = abundList(abund_idx);
                             mmol_gCDW = sum(abund_tmp*1e3/1e15)*1000;
