@@ -1,5 +1,4 @@
 load('ecYeastGEM_batch.mat'); %https://github.com/SysBioChalmers/ecModels
-sol_org = optimizeCbModel(ecModel_batch);
 
 proteinlist = ecModel_batch.genes;
 

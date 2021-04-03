@@ -61,6 +61,62 @@ for i = 1:length(allrxn)
     end
 end
 
+
+
+% add proteins and EC numbers
+load('GEM-yeast-split.mat');
+
+[~, rawUniprot, ~] = xlsread('ec_number.xlsx','Uniprot');
+[~, rawKEGG, ~] = xlsread('ec_number.xlsx','KEGG');
+id_Uniprot = rawUniprot(:,1);
+ec_Uniprot = rawUniprot(:,2);
+id_KEGG = rawKEGG(:,1);
+ec_KEGG = rawKEGG(:,2);
+id_list = unique([id_Uniprot;id_KEGG]);
+ecdata = struct();
+ecdata.id = cell(0,1);
+ecdata.ec = cell(0,1);
+for i = 1:length(id_list)
+    id = id_list(i);
+    if ismember(id,id_Uniprot)
+        ec_U_tmp = ec_Uniprot(ismember(id_Uniprot,id));
+        ec_U_tmp = split(ec_U_tmp);
+        id_U_tmp = repelem(id,length(ec_U_tmp))';
+        ecdata.id = [ecdata.id;id_U_tmp];
+        ecdata.ec = [ecdata.ec;ec_U_tmp];
+    end
+    if ismember(id,id_KEGG)
+        ec_K_tmp = ec_KEGG(ismember(id_KEGG,id));
+        id_K_tmp = repelem(id,length(ec_K_tmp))';
+        ecdata.id = [ecdata.id;id_K_tmp];
+        ecdata.ec = [ecdata.ec;ec_K_tmp];
+    end
+end
+
+kcat.EC = cell(length(kcat.rxn),1);
+kcat.protein = cell(length(kcat.rxn),1);
+
+for i = 1:length(kcat.rxn)
+    
+    proteins = model_split.grRules(ismember(model_split.rxns,kcat.rxn(i)));
+        kcat.protein(i) = proteins;
+        proteins = strrep(proteins,'( ','');
+        proteins = strrep(proteins,' )','');
+        proteins = split(proteins,' or ');
+
+        if any(ismember(proteins,ecdata.id))
+            ectmp = cell(0,1);
+            for j = 1:length(proteins)
+                ectmp = [ectmp;ecdata.ec(ismember(ecdata.id,proteins(j)))];
+            end
+            ectmp = unique(ectmp);
+            kcat.EC(i) = join(ectmp);
+        else
+            kcat.EC(i) = {''};
+        end
+end
+
+
 cd ../;
 save('kcat.mat','kcat');
 clear;
