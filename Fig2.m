@@ -254,7 +254,7 @@ legend({'global kcat' 'default kcat' 'kmax' 'kmax(mu)'},'Location','northwest','
 set(gca,'FontSize',6,'FontName','Helvetica');
 ylabel('RMSE','FontSize',7,'FontName','Helvetica','Color','k');
 title('Predictions of protein levels on various carbon sources','FontSize',7,'FontName','Helvetica','Color','k');
-set(gcf,'position',[200 100 400 120]);
+set(gcf,'position',[200 100 400 125]);
 set(gca,'position',[0.1 0.2 0.75 0.5]);
 box off;
 
