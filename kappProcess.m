@@ -77,6 +77,19 @@ for i = 1:length(kapp.rxn)
     end
 end
 
+[num,txt,~] = xlsread('ProteomicsFlux.xlsx','Flux');
+exRxnList = txt(2:end,1);
+exFluxes = num;
+expList = txt(1,3:end);
+clear num txt;
+expGR = exFluxes(ismember(exRxnList,'r_2111'),:);
+conditions = strrep(expList,'R1','');
+conditions = strrep(conditions,'R2','');
+conditions = strrep(conditions,'R3','');
+kapp.condGR = zeros(1,length(kapp.condition));
+for i = 1:length(kapp.condition)
+    kapp.condGR(1,i) = mean(expGR(contains(conditions,kapp.condition(i))));
+end
 
 save('kapp.mat','kapp');
 clear;

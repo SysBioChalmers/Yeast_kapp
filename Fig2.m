@@ -250,7 +250,7 @@ b(4).FaceColor = colorveryhigh;
 set(gca,'XTick',1:1:length(rmseCSlist));
 set(gca,'XTickLabel',strcat(rmseCSlist,ndata));
 ylim([0 2.3]);
-legend({'global kcat' 'default kcat' 'kmax' 'kmax(mu)'},'Location','northwest','Orientation','horizontal','FontSize',6,'FontName','Helvetica');
+legend({'assumed kcat' 'default in vitro kcat' 'general kmax' 'kmax(mu)'},'Location','northwest','Orientation','horizontal','FontSize',6,'FontName','Helvetica');
 set(gca,'FontSize',6,'FontName','Helvetica');
 ylabel('RMSE','FontSize',7,'FontName','Helvetica','Color','k');
 title('Predictions of protein levels on various carbon sources','FontSize',7,'FontName','Helvetica','Color','k');
