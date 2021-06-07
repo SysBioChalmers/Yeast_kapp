@@ -325,7 +325,7 @@ ylabel('Individual kapp/kmax','FontSize',7,'FontName','Helvetica','Color','k');
 ranksump = ranksum(satur_low,satur_high);
 title(['rank sum test p' ' < 1e' num2str(ceil(log10(ranksump)))],'FontSize',6,'FontName','Helvetica');
 set(gcf,'position',[200 100 100 100]);
-set(gca,'position',[0.25 0.2 0.7 0.7]);
+set(gca,'position',[0.25 0.2 0.6 0.7]);
 
 %% kmax and kcat correlates with avg flux
 % figure();

@@ -238,7 +238,7 @@ for i = 1:length(rmseCSlist)
 end
 
 figure();
-b = bar(1:length(rmseCSlist),rmsedata');
+b = bar(1:length(rmseCSlist),rmsedata',0.6);
 b(1).LineWidth = 0.5;
 b(1).FaceColor = colorlow;
 b(2).LineWidth = 0.5;
@@ -254,7 +254,7 @@ legend({'assumed kcat' 'default in vitro kcat' 'general kmax' 'kmax(mu)'},'Locat
 set(gca,'FontSize',6,'FontName','Helvetica');
 ylabel('RMSE','FontSize',7,'FontName','Helvetica','Color','k');
 title('Predictions of protein levels on various carbon sources','FontSize',7,'FontName','Helvetica','Color','k');
-set(gcf,'position',[200 100 400 125]);
+set(gcf,'position',[200 100 380 80]);
 set(gca,'position',[0.1 0.2 0.75 0.5]);
 box off;
 

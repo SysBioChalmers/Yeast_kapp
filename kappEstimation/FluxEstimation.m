@@ -2,6 +2,8 @@
 % model_split = splitRevRxns(model);
 % save('GEM-yeast-split.mat','model_split');
 
+setRavenSolver('cobra');
+
 load('GEM-yeast-split.mat');
 model = model_split;
 
@@ -14,7 +16,8 @@ exFluxes = num;
 expList = txt(1,3:end);
 clear num txt;
 
-for i = 1:length(expList)
+
+for i = 26:length(expList)
     display([num2str(i),'/',num2str(length(expList))]);
     
     expID = expList{i};
@@ -67,6 +70,17 @@ for i = 1:length(expList)
     Fluxes.deviation = deviation;
     Fluxes.model = model_new;
     Fluxes.pFBA = sol_new.fluxes;
+    
+    % random sampling
+    if Fluxes.deviation < 0.1
+        model_sample = Fluxes.model;
+        model_sample = removeTotFluxRxn(model_sample,expID);
+        model_sample = ravenCobraWrapper(model_sample);
+        [solutions,~] = randomSampling(model_sample,10000,1,0,1);
+        Fluxes.SamplingFluxes = solutions;
+    else
+        Fluxes.SamplingFluxes = [];
+    end
     cd Fluxes/;
     save(['Fluxes_' expID '.mat'],'Fluxes');
     cd ../;
