@@ -120,7 +120,6 @@ kapp_raw_sampling.fluxes = fluxlist;
 kapp_raw_sampling.protein_conc = abundlist;
 
 cd ../../sampling;
-% save('kapp_raw_sampling.mat','kapp_raw_sampling');
 save('kapp_raw_sampling_median.mat','kapp_raw_sampling');
 clear;
 
