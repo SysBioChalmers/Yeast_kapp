@@ -8,10 +8,6 @@ CSexlist = {'r_1714_REV' 'r_1931_REV' 'r_1650_REV' 'r_1709_REV' 'r_2058_REV' 'r_
 maxmulist = [0.46	0.14	0.15	0.46	0.46	0.24	0.17	0.23	0.11	0.16	0.34	0.33];
 
 %% color
-% colorveryhigh = [124,81,161]/255;
-% colorhigh = [158,154,200]/255;
-% colormedium = [218,218,235]/255;
-% colorlow = [1,1,1];
 
 colorveryhigh = [240,59,32]/255;
 colorhigh = [254,178,76]/255;
@@ -20,8 +16,7 @@ colorlow = [1,1,1];
 
 %% Assume a global turnover rate for all enzymes in ecYeast
 model1 = ecModel_batch;
-% Median of yeast (Saccharomyces cerevisiae) kcats in BRENDA is 7.84 /s.
-% mdnkcat = 7.84 * 3600; % /h
+
 % Median of Central-CE (PMID: 21506553)
 mdnkcat = 79 * 3600; % /h
 for i = 1:length(model1.rxns)
@@ -40,30 +35,6 @@ levellist1 = extractProteinLevels(model1,fluxes1,proteinlist);
 model2 = ecModel_batch;
 fluxes2 = simulateCarbonSourceFixMu(model2,CSexlist,maxmulist);
 levellist2 = extractProteinLevels(model2,fluxes2,proteinlist);
-
-% load('kcat.mat');
-% model2 = ecModel_batch;
-% for i = 1:length(kcat.rxn)
-%     rxntmp = kcat.rxn{i};
-%     k = kcat.value(i)*3600; % /h
-%     if length(rxntmp) == 6
-%         idxtmp = find(contains(model2.rxns,rxntmp));
-%     elseif length(rxntmp) == 10
-%         if strcmp(rxntmp(8:end),'rvs')
-%             idxtmp = find(contains(model2.rxns,rxntmp(1:6)) & contains(model2.rxns,'REV'));
-%         elseif strcmp(rxntmp(8:end),'fwd')
-%             idxtmp = find(contains(model2.rxns,rxntmp(1:6)) & ~contains(model2.rxns,'REV') & ~contains(model2.rxns,'arm'));
-%         end
-%     end
-%     for j = 1:length(idxtmp)
-%         metlist = model2.mets(full(model2.S(:,idxtmp(j))) < 0);
-%         protmet = metlist(contains(metlist,'prot_'));
-%         model2.S(ismember(model2.mets,protmet),idxtmp(j)) = -1/k;
-%     end
-% end
-% fluxes2 = simulateCarbonSourceFixMu(model2,CSexlist,maxmulist);
-% levellist2 = extractProteinLevels(model2,fluxes2,proteinlist);
-
 
 %% Replace kcat of ecYeast by kmax
 
@@ -167,17 +138,6 @@ idxtmp = gluc_abs~=0;
 gluc_abs = gluc_abs(idxtmp);
 gluc_protlist = gluc_protlist(idxtmp);
 clear idxtmp;
-
-% [num,txt,~] = xlsread('ProteomicsCarbonSources.xlsx','RichAer');
-% gluc_protlist = txt(2:end,1);
-% rawdata = num(:,2);
-% gluc_abs = zeros(length(gluc_protlist),1);
-% for i = 1:length(gluc_protlist)
-%     if any(ismember(prot,gluc_protlist(i)))
-%         gluc_abs(i) = rawdata(i)*1000/MW(ismember(prot,gluc_protlist(i)));
-%     end
-% end
-% clear num txt;
 
 [num,txt,~] = xlsread('ProteomicsCarbonSources.xlsx','Paulo2015');
 Paulo2015.protid = txt(2:end,1);

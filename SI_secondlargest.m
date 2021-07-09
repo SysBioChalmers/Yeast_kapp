@@ -19,9 +19,6 @@ end
 load('kcat.mat');
 
 %% color
-% maincolor = [124,81,161]/255;
-% heatmaplow = [218,218,235]/255;
-
 maincolor = [240,59,32]/255;
 heatmaplow = [255,237,160]/255;
 

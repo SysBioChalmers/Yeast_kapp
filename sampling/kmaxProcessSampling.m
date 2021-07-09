@@ -1,5 +1,9 @@
-load('kapp_sampling_median.mat');
-load('kapp_raw_sampling_median.mat');
+CalType = 'median';
+% CalType = 'mean';
+
+
+load(['kapp_sampling_' CalType '.mat']);
+load(['kapp_raw_sampling_' CalType '.mat']);
 
 kapp4.max = zeros(0,1);
 kapp4.rxn = cell(0,1);
@@ -20,7 +24,7 @@ for i = 1:length(kapp.rxn)
     end
 end
 
-save('kmax_sampling_median.mat','kapp4');
+save(['kmax_sampling_' CalType '.mat'],'kapp4');
 
 
 

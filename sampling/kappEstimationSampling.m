@@ -1,3 +1,6 @@
+CalType = 'median';
+% CalType = 'mean';
+
 load('GEM-yeast-split.mat');
 rxnlist = model_split.rxns;
 grlist = model_split.grRules;
@@ -34,8 +37,11 @@ for i = 1:length(file)
         proteinList = txt(2:end,1);
         abundList = num(:,ismember(head,condid));
         
-%         fluxes_sampling = mean(full(Fluxes.SamplingFluxes),2);
-        fluxes_sampling = median(full(Fluxes.SamplingFluxes),2);
+        if strcmp(CalType,'median')
+            fluxes_sampling = median(full(Fluxes.SamplingFluxes),2);
+        elseif strcmp(CalType,'mean')
+            fluxes_sampling = mean(full(Fluxes.SamplingFluxes),2);
+        end
         
         fluxes = fluxes_sampling;
         fluxes(abs(fluxes)<1e-5) = 0; %﻿the absolute flux value should surpass 0.00001
@@ -120,9 +126,6 @@ kapp_raw_sampling.fluxes = fluxlist;
 kapp_raw_sampling.protein_conc = abundlist;
 
 cd ../../sampling;
-save('kapp_raw_sampling_median.mat','kapp_raw_sampling');
+save(['kapp_raw_sampling_' CalType '.mat'],'kapp_raw_sampling');
 clear;
-
-
-
 

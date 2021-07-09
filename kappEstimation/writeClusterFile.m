@@ -8,7 +8,7 @@ for i = 1:66
     fprintf(fptr,'#SBATCH -n 20\n');
     fprintf(fptr,'#SBATCH -o out.txt\n');
     fprintf(fptr,'#SBATCH --time 0-12:00:00\n');
-    fprintf(fptr,'#SBATCH --mail-user=feiranl@chalmers.se\n');
+    fprintf(fptr,'#SBATCH --mail-user=emailaddress\n');
     fprintf(fptr,'#SBATCH --mail-type=end\n');
     fprintf(fptr,'module load MATLAB intel/2018b GMP CMake GCCcore/8.3.0 Gurobi/7.0.1\n');
     

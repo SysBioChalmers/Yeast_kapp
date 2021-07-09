@@ -2,14 +2,14 @@ function FluxEstimationCluster(i)
 
 % init cluster function %% please modify this part based on the position of
 % those tool box
-addpath(genpath('/cephyr/users/feiranl/Hebbe/tools/libSBML-5.15.0-matlab'));
-addpath(genpath('/cephyr/users/feiranl/Hebbe/tools'));
-addpath(genpath('/cephyr/users/feiranl/Hebbe/tools/RAVEN'));
-addpath(genpath('/cephyr/users/feiranl/Hebbe/tools/MATLAB-git'));
-addpath(genpath('/cephyr/users/feiranl/Hebbe/kappEstimation'));
+addpath(genpath('/cephyr/users/id/Hebbe/tools/libSBML-5.15.0-matlab'));
+addpath(genpath('/cephyr/users/id/Hebbe/tools'));
+addpath(genpath('/cephyr/users/id/Hebbe/tools/RAVEN'));
+addpath(genpath('/cephyr/users/id/Hebbe/tools/MATLAB-git'));
+addpath(genpath('/cephyr/users/id/Hebbe/kappEstimation'));
 
 workdir = pwd;
-cd '/cephyr/users/feiranl/Hebbe/tools/cobratoolbox';
+cd '/cephyr/users/id/Hebbe/tools/cobratoolbox';
 initCobraToolbox;
 savepath '~/pathdef.m';
 cd(workdir);
@@ -90,13 +90,6 @@ if Fluxes.deviation < 0.1
     model_sample = ravenCobraWrapper(model_sample);
     [solutions,~] = randomSampling(model_sample,10000,1,0,1);
     Fluxes.SamplingFluxes = solutions;
-%     tot_flux = Fluxes.pFBA(ismember(Fluxes.model.rxns,'r_tot_flux'));
-%     model_sample = Fluxes.model;
-%     model_sample = changeRxnBounds(model_sample,'r_tot_flux',tot_flux*0.9999,'l');
-%     model_sample = changeRxnBounds(model_sample,'r_tot_flux',tot_flux*1.0001,'u');
-%     model_sample = ravenCobraWrapper(model_sample);
-%     [solutions,~] = randomSampling(model_sample,10000,0,0,1);
-%     Fluxes.SamplingFluxes = solutions;
 else
     Fluxes.SamplingFluxes = [];
 end

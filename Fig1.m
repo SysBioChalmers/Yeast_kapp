@@ -39,8 +39,6 @@ load('kmax.mat');
 
 
 %% color
-% maincolor = [124,81,161]/255;
-% heatmaplow = [218,218,235]/255;
 
 maincolor = [240,59,32]/255;
 heatmaplow = [255,237,160]/255;
@@ -61,11 +59,6 @@ scatter(log10(x_kcat),log10(y_kmax),10,'o','filled','LineWidth',1,'MarkerEdgeCol
 text(2,0.2,['R^2' ' = ' num2str(round(RHO^2,3))],'Color','black','FontSize',6,'FontName','Helvetica');
 text(2,-0.5,['N = ' num2str(length(x_kcat))],'Color','black','FontSize',6,'FontName','Helvetica');
 text(2,-1.2,['p' ' = ' num2str(round(PVAL,9))],'Color','black','FontSize',6,'FontName','Helvetica');
-% rxn_bigdev = rxns(abs(log10(x_kcat./y_kmax)) > quantile((abs(log10(x_kcat./y_kmax))),0.9));
-% for i = 1:length(rxn_bigdev)
-%     idxtmp = ismember(rxns,rxn_bigdev{i});
-%     text(log10(x_kcat(idxtmp)),log10(y_kmax(idxtmp)),strrep(rxn_bigdev{i},'_',''),'Color','black','FontSize',5,'FontName','Helvetica','HorizontalAlignment','center','VerticalAlignment','bottom');
-% end
 xlim([-2 5]);
 ylim([-2 5]);
 xticks(-2:1:5);
@@ -95,7 +88,6 @@ scatter(log10(x_kcat),log10(y_kmax),10,'o','filled','LineWidth',1,'MarkerEdgeCol
 text(2,0.2,['R^2' ' = ' num2str(round(RHO^2,3))],'Color','black','FontSize',6,'FontName','Helvetica');
 text(2,-0.5,['N = ' num2str(length(x_kcat))],'Color','black','FontSize',6,'FontName','Helvetica');
 text(2,-1.2,['p' ' = ' num2str(round(PVAL,10))],'Color','black','FontSize',6,'FontName','Helvetica');
-% rxn_bigdev = rxns(abs(log10(x_kcat./y_kmax)) > quantile((abs(log10(x_kcat./y_kmax))),0.95));
 rxn_bigdev = rxns(abs(log10(x_kcat./y_kmax)) > 2);
 for i = 1:length(rxn_bigdev)
     idxtmp = ismember(rxns,rxn_bigdev{i});
@@ -143,7 +135,6 @@ scatter(log10(x_kcat),log10(y_kmax),10,'o','filled','LineWidth',1,'MarkerEdgeCol
 text(2,0.2,['R^2' ' = ' num2str(round(RHO^2,3))],'Color','black','FontSize',6,'FontName','Helvetica');
 text(2,-0.5,['N = ' num2str(length(x_kcat))],'Color','black','FontSize',6,'FontName','Helvetica');
 text(2,-1.2,['p' ' = ' num2str(round(PVAL,3))],'Color','black','FontSize',6,'FontName','Helvetica');
-% rxn_bigdev = rxns(abs(log10(x_kcat./y_kmax)) > quantile((abs(log10(x_kcat./y_kmax))),0.95));
 rxn_bigdev = rxns(abs(log10(x_kcat./y_kmax)) > 2);
 for i = 1:length(rxn_bigdev)
     idxtmp = ismember(rxns,rxn_bigdev{i});
@@ -231,18 +222,6 @@ ylabel('log10 kmax (in vivo) (/s)','FontSize',7,'FontName','Helvetica');
 set(gcf,'position',[1000 200 110 110]);
 set(gca,'position',[0.2 0.2 0.7 0.7]);
 
-%% Variation between kmax and kmin
-% figure();
-% histogram(log2(kapp4.fc),'FaceColor',maincolor);
-% set(gca,'FontSize',6,'FontName','Helvetica');
-% xlim([-1 12]);
-% xticks([0 5 10]);
-% ylim([0 30]);
-% xlabel('log2(max/min)','FontSize',7,'FontName','Helvetica');
-% ylabel('Count','FontSize',7,'FontName','Helvetica');
-% set(gcf,'position',[10 200 120 120]);
-% set(gca,'position',[0.2 0.2 0.7 0.7]);
-
 %% saturation with growth rate
 [num,txt,~] = xlsread('ProteomicsFlux.xlsx','Flux');
 exRxnList = txt(2:end,1);
@@ -279,23 +258,6 @@ ylabel('Average kapp/kmax','FontSize',7,'FontName','Helvetica');
 set(gcf,'position',[100 100 100 100]);
 set(gca,'position',[0.3 0.2 0.6 0.7]);
 
-
-% list_rho = zeros(size(list_satur,1),1);
-% list_p = zeros(size(list_satur,1),1);
-% for i = 1:size(list_satur,1)
-%     [m,n] = corr(list_gr',list_satur(i,:)','Type','Pearson');
-%     list_rho(i) = m;
-%     list_p(i) = n;
-% end
-% figure();
-% histogram(list_rho,'FaceColor',maincolor);
-% set(gca,'FontSize',6,'FontName','Helvetica');
-% title('Correlation between kapp/kmax and growth rate','FontSize',7,'FontName','Helvetica');
-% xlabel('Pearson r','FontSize',7,'FontName','Helvetica');
-% ylabel('Count','FontSize',7,'FontName','Helvetica');
-% set(gcf,'position',[200 400 120 120]);
-% set(gca,'position',[0.2 0.2 0.7 0.7]);
-
 grcutoff = 0.20;
 satur_low = list_satur(:,list_gr <= grcutoff);
 satur_low = satur_low(:);
@@ -321,73 +283,8 @@ set(gca,'FontSize',6,'FontName','Helvetica');
 set(gca,'XColor','k');
 set(gca,'YColor','k');
 ylabel('Individual kapp/kmax','FontSize',7,'FontName','Helvetica','Color','k');
-% [~,ttestp] = ttest2(satur_low,satur_high,'Vartype','unequal');
 ranksump = ranksum(satur_low,satur_high);
 title(['rank sum test p' ' < 1e' num2str(ceil(log10(ranksump)))],'FontSize',6,'FontName','Helvetica');
 set(gcf,'position',[200 100 100 100]);
 set(gca,'position',[0.25 0.2 0.6 0.7]);
-
-%% kmax and kcat correlates with avg flux
-% figure();
-% [RHO,PVAL] = corr(log10(kapp4.pFBA),log10(kapp4.max),'Type','Pearson');
-% scatter(log10(kapp4.pFBA),log10(kapp4.max),15,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
-% box on;
-% xlim([-6 2]);
-% ylim([-4 6]);
-% % xticks([-2 0 2 4 6]);
-% % yticks([-2 0 2 4 6]);
-% title(['R^2' '= ' num2str(round(RHO^2,3)) '; p' ' < 1e' num2str(ceil(log10(PVAL))) '; N' ' = ' num2str(length(kapp4.pFBA))],'FontSize',6,'FontName','Helvetica');
-% set(gca,'FontSize',6,'FontName','Helvetica');
-% xlabel('log10 flux (mmol/gCDW/h)','FontSize',7,'FontName','Helvetica');
-% ylabel('log10 kmax (/s)','FontSize',7,'FontName','Helvetica');
-% set(gcf,'position',[400 400 120 120]);
-% set(gca,'position',[0.2 0.2 0.7 0.7]);
-
-% load('kapp_raw.mat');
-% rxnlist = kapp_raw.rxn;
-% fluxlist = kapp_raw.fluxes;
-% fluxlist(fluxlist == 0) = nan;
-% avgfluxlist = mean(fluxlist,2,'omitnan');
-% figure(); %kcat vs flux
-% k_rxn = kcat.rxn;
-% k_value = kcat.value;
-% ovlp_rxn = intersect(k_rxn,rxnlist);
-% [~,p] = ismember(ovlp_rxn,k_rxn);
-% x_k = k_value(p);
-% [~,q] = ismember(ovlp_rxn,rxnlist);
-% y_f = avgfluxlist(q);
-% [RHO,PVAL] = corr(log10(x_k),log10(y_f),'Type','Pearson');
-% scatter(log10(x_k),log10(y_f),10,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
-% title(['R^2' ' = ' num2str(round(RHO^2,3)) '; N = ' num2str(length(x_k)) '; p' ' = ' num2str(round(PVAL,13))],'Color','black','FontSize',6,'FontName','Helvetica');
-% xlim([-3 6]);
-% ylim([-6 3]);
-% set(gca,'FontSize',6,'FontName','Helvetica');
-% xlabel('log10 kcat (in vitro) (/s)','FontSize',7,'FontName','Helvetica');
-% ylabel('log10 flux (mmol/gCDW/h)','FontSize',7,'FontName','Helvetica');
-% set(gcf,'position',[0 600 120 120]);
-% set(gca,'position',[0.2 0.2 0.7 0.7]);
-% 
-% figure(); %kmax vs flux
-% k_rxn = kapp4.rxn;
-% k_value = kapp4.max;
-% ovlp_rxn = intersect(k_rxn,rxnlist);
-% [~,p] = ismember(ovlp_rxn,k_rxn);
-% x_k = k_value(p);
-% [~,q] = ismember(ovlp_rxn,rxnlist);
-% y_f = avgfluxlist(q);
-% [RHO,PVAL] = corr(log10(x_k),log10(y_f),'Type','Pearson');
-% scatter(log10(x_k),log10(y_f),10,'o','filled','LineWidth',1,'MarkerEdgeColor',[1,1,1],'MarkerFaceColor',maincolor,'MarkerFaceAlpha',0.5,'MarkerEdgeAlpha',0);
-% title(['R^2' ' = ' num2str(round(RHO^2,3)) '; N = ' num2str(length(x_k)) '; p' ' = ' num2str(round(PVAL,48))],'Color','black','FontSize',6,'FontName','Helvetica');
-% xlim([-3 6]);
-% ylim([-6 3]);
-% set(gca,'FontSize',6,'FontName','Helvetica');
-% xlabel('log10 kmax (in vivo) (/s)','FontSize',7,'FontName','Helvetica');
-% ylabel('log10 flux (mmol/gCDW/h)','FontSize',7,'FontName','Helvetica');
-% set(gcf,'position',[400 600 120 120]);
-% set(gca,'position',[0.2 0.2 0.7 0.7]);
-
-
-
-
-
 

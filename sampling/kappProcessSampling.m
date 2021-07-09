@@ -1,4 +1,7 @@
-load('kapp_raw_sampling_median.mat');
+CalType = 'median';
+% CalType = 'mean';
+
+load(['kapp_raw_sampling_' CalType '.mat']);
 
 conditions = strrep(kapp_raw_sampling.condition,'R1','');
 conditions = strrep(conditions,'R2','');
@@ -91,6 +94,6 @@ for i = 1:length(kapp.condition)
     kapp.condGR(1,i) = mean(expGR(contains(conditions,kapp.condition(i))));
 end
 
-save('kapp_sampling_median.mat','kapp');
+save(['kapp_sampling_' CalType '.mat'],'kapp');
 clear;
 
